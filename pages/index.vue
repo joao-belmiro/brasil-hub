@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="center-container">
     <Button label="Clique em mim" />
   </div>
 </template>
 
 <script setup>
-// O componente Button já está registrado globalmente, então você pode usá-lo diretamente
+import Button from "primevue/button";
 </script>
