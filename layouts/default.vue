@@ -13,7 +13,7 @@
     >
       <template #start>
         <h1
-          class="flex flex-row items-center gap-3 justify-center text-3xl font-extrabold leading-none text-green-600 md:text-5xl lg:text-3xl tracking-normal"
+          class="flex flex-row items-center gap-3 justify-center font-extrabold leading-none text-green-600 sm:text-sm md:text-2xl xl:text-3xl lg:text-3xl tracking-normal"
         >
           Brasil
           <mark
@@ -54,7 +54,7 @@
             class="inline-flex items-center justify-center rounded-full bg-primary text-primary-contrast w-12 h-12"
             style="--p-primary-color: #009739)"
           >
-            <i :class="[item.icon, 'text-lg', 'dark:text-white']"></i>
+           <Icon :name="item.icon" :class="['text-lg', 'dark:text-white opacity-100']"/>
           </span>
           <span class="inline-flex flex-col gap-1">
             <span class="font-bold text-lg">{{ item.label }}</span>
@@ -95,17 +95,17 @@ const items = ref([
           items: [
             {
               label: "Features",
-              icon: "pi pi-list",
+              icon: "Calculator",
               subtext: "Subtext of item",
             },
             {
               label: "Customers",
-              icon: "pi pi-users",
+              icon: "Users",
               subtext: "Subtext of item",
             },
             {
               label: "Case Studies",
-              icon: "pi pi-file",
+              icon: "File",
               subtext: "Subtext of item",
             },
           ],
@@ -116,17 +116,17 @@ const items = ref([
           items: [
             {
               label: "Solutions",
-              icon: "pi pi-shield",
+              icon: "Shield",
               subtext: "Subtext of item",
             },
             {
               label: "Faq",
-              icon: "pi pi-question",
+              icon: "TableOfContents",
               subtext: "Subtext of item",
             },
             {
               label: "Library",
-              icon: "pi pi-search",
+              icon: "Search",
               subtext: "Subtext of item",
             },
           ],
@@ -137,17 +137,17 @@ const items = ref([
           items: [
             {
               label: "Community",
-              icon: "pi pi-comments",
+              icon: "MessageCircle",
               subtext: "Subtext of item",
             },
             {
               label: "Rewards",
-              icon: "pi pi-star",
+              icon: "Star",
               subtext: "Subtext of item",
             },
             {
               label: "Investors",
-              icon: "pi pi-globe",
+              icon: "Globe",
               subtext: "Subtext of item",
             },
           ],
