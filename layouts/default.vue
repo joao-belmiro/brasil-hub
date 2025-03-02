@@ -68,7 +68,7 @@
         </div>
       </template>
       <template #end>
-        <Button :icon="!isDark ? 'pi pi-sun' : 'pi pi-moon'" aria-="Save" severity="contrast"  rounded size="small" @click="toggleDarkMode()" />
+        <Button :icon="!isDark ? 'pi pi-sun' : 'pi pi-moon'" aria-="Save" :outlined=isDark severity="secondary" rounded size="small" @click="toggleDarkMode()" />
       </template>
     </MegaMenu>
    
