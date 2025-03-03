@@ -54,7 +54,7 @@
             class="inline-flex items-center justify-center rounded-full bg-primary text-primary-contrast w-12 h-12"
             style="--p-primary-color: #009739)"
           >
-           <Icon :name="item.icon" :class="['text-lg', 'dark:text-white opacity-100']"/>
+           <Icon :name="item.icon" :strokeWidth="2" :class="['text-lg', 'dark:text-white opacity-100']"/>
           </span>
           <span class="inline-flex flex-col gap-1">
             <span class="font-bold text-lg">{{ item.label }}</span>
