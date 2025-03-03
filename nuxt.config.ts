@@ -12,6 +12,9 @@ export default defineNuxtConfig({
   modules: ['nuxt-echarts', '@primevue/nuxt-module'],
   vite: {
     plugins: [tailwindcss()],
+    resolve: {
+      alias: { 'echarts/lib/util/number': 'echarts/lib/util/number.js' },
+    },
   },
   primevue: {
     options: {
@@ -26,5 +29,19 @@ export default defineNuxtConfig({
         }
       }
     }
-  }
+  },
+  echarts: {
+    renderer: ['svg', 'canvas'],
+    charts: ['LineChart'],
+    components: [
+      'DatasetComponent',
+      'GridComponent',
+      'TooltipComponent',
+      'ToolboxComponent',
+      'GeoComponent',
+      'VisualMapComponent',
+      'LegendComponent'
+    ],  
+  },
+  build: { transpile: ['echarts-liquidfill'] },
 })
