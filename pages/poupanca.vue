@@ -1,33 +1,33 @@
 <template>
 <div class="center-container">
-<Card class="shadow-lg rounded-lg">
+<Card b class="shadow-sm dark:border-0 border-gray-200" style="--p-card-border-radius: 16px;">
     <template #content>
-    <h2 class="text-xl font-bold text-green-600 mb-4">Simulador de Juros Compostos</h2>
+    <h2 class="text-xl font-normal text-green-600 mb-8">Simulador de Juros Compostos</h2>
     
-    <form @submit.prevent="calcularPoupanca" class="space-y-4">
+    <form @submit.prevent="calcularPoupanca" class="space-y-6">
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block text-gray-700 dark:text-white mb-3">Valor inicial</label>
-          <InputNumber v-model="valorInicial" mode="currency" currency="BRL" locale="pt-BR" class="w-full" />
+          <label class="block not:dark:text-white  mb-3">Valor inicial</label>
+          <InputNumber size="small" v-model="valorInicial" mode="currency" currency="BRL" locale="pt-BR" class="w-full rounded-md" />
         </div>
         <div>
-          <label class="block text-gray-700  dark:text-white mb-3">Valor mensal</label>
-          <InputNumber v-model="aporte" mode="currency" currency="BRL" locale="pt-BR" class="w-full" />
+          <label class="block not:dark:text-white mb-3">Valor mensal</label>
+          <InputNumber size="small" v-model="aporte" mode="currency" currency="BRL" locale="pt-BR" class="w-full" />
         </div>
       </div>
 
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block text-gray-700  dark:text-white mb-3">Taxa de juros (%)</label>
-          <InputNumber v-model="taxaJuros" mode="decimal" :min="0" :max="100" class="w-full" />
+          <label class="block not:dark:text-white mb-3">Taxa de juros anual (%)</label>
+          <InputNumber size="small" v-model="taxaJuros" mode="decimal" :min="0" :max="100" class="w-full" />
         </div>
         <div>
-          <label class="block text-gray-700  dark:text-white mb-3">Período (meses)</label>
-          <InputNumber v-model="meses" :min="1" class="w-full" />
+          <label class="block not:dark:text-white mb-3">Período (meses)</label>
+          <InputNumber size="small"  v-model="meses" :min="1" class="w-full" />
         </div>
       </div>
   
-      <Button label="Calcular" class="w-full bg-red-800 text-white" type="submit" />
+      <Button label="Calcular" class=" text-white" type="submit" />
     </form>
 
     <div v-if="dadosGrafico.length" class="mt-6">

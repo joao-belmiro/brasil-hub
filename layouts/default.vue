@@ -13,7 +13,7 @@
     >
       <template #start>
         <h1
-          class="flex flex-row items-center gap-3 justify-center font-extrabold leading-none text-green-600 sm:text-sm md:text-2xl xl:text-3xl lg:text-3xl tracking-normal"
+          class="flex flex-row items-center gap-3 justify-center font-extrabold leading-none text-green-500 sm:text-sm md:text-2xl xl:text-3xl lg:text-3xl tracking-normal"
         >
           Brasil
           <mark
@@ -25,7 +25,7 @@
       <template #item="{ item }">
         <a
           v-if="item.root"
-          class="flex items-center justify-center cursor-pointer px-4 py-2 overflow-hidden relative font-semibold text-lg"
+          class="flex items-center justify-center cursor-pointer px-4 py-2 overflow-hidden relative font-normal text-md"
           style="border-radius: 2rem"
         >
           <span>{{ item.label }}</span>
@@ -51,14 +51,14 @@
           class="flex items-center p-4 cursor-pointer mb-2 gap-3"
         >
           <span
-            class="inline-flex items-center justify-center rounded-full bg-primary text-primary-contrast w-12 h-12"
+            class="inline-flex items-center justify-center rounded-full bg-primary text-primary-contrast w-10 h-10"
             style="--p-primary-color: #009739)"
           >
            <Icon :name="item.icon" :strokeWidth="2" :class="['text-lg', 'dark:text-white opacity-100']"/>
           </span>
           <span class="inline-flex flex-col gap-1">
-            <span class="font-bold text-lg">{{ item.label }}</span>
-            <span class="whitespace-nowrap">{{ item.subtext }}</span>
+            <span class="font-semibold text-md">{{ item.label }}</span>
+            <span class="whitespace-nowrap font-thin text-sm">{{ item.subtext }}</span>
           </span>
         </a>
         <div v-else class="flex flex-col items-start gap-4 p-2">
