@@ -11,7 +11,7 @@
           <div class="p-3 rounded-full bg-green-500/10">
             <Icon
                color="#009739"
-               strokeWidth="2"
+              :strokeWidth="2"
               :name="calculator.icon"
               :class="['text-lg']"
             />

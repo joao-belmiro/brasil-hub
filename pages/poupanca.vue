@@ -1,37 +1,37 @@
 <template>
 <div class="center-container">
-<Card b class="shadow-sm dark:border-0 border-gray-200" style="--p-card-border-radius: 16px;">
+<Card class="shadow-sm dark:border-0 border-gray-200 max-w-4xl w-full" style="--p-card-border-radius: 16px;">
     <template #content>
-    <h2 class="text-xl font-normal text-green-600 mb-8">Simulador de Juros Compostos</h2>
+    <h2 class="text-xl md:text-2xl font-normal text-green-600 mb-6 md:mb-8">Simulador de Juros Compostos</h2>
     
-    <form @submit.prevent="calcularPoupanca" class="space-y-6">
-      <div class="grid grid-cols-2 gap-4">
+    <form @submit.prevent="calcularPoupanca" class="space-y-4 md:space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block not:dark:text-white  mb-3">Valor inicial</label>
+          <label class="block not:dark:text-white mb-2 md:mb-3">Valor inicial</label>
           <InputNumber size="small" v-model="valorInicial" mode="currency" currency="BRL" locale="pt-BR" class="w-full rounded-md" />
         </div>
         <div>
-          <label class="block not:dark:text-white mb-3">Valor mensal</label>
+          <label class="block not:dark:text-white mb-2 md:mb-3">Valor mensal</label>
           <InputNumber size="small" v-model="aporte" mode="currency" currency="BRL" locale="pt-BR" class="w-full" />
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block not:dark:text-white mb-3">Taxa de juros anual (%)</label>
+          <label class="block not:dark:text-white mb-2 md:mb-3">Taxa de juros anual (%)</label>
           <InputNumber size="small" v-model="taxaJuros" mode="decimal" :min="0" :max="100" class="w-full" />
         </div>
         <div>
-          <label class="block not:dark:text-white mb-3">Período (meses)</label>
-          <InputNumber size="small"  v-model="meses" :min="1" class="w-full" />
+          <label class="block not:dark:text-white mb-2 md:mb-3">Período (meses)</label>
+          <InputNumber size="small" v-model="meses" :min="1" class="w-full" />
         </div>
       </div>
   
-      <Button label="Calcular" class=" text-white" type="submit" />
+      <Button label="Calcular" class="w-full md:w-auto text-white" type="submit" />
     </form>
 
     <div v-if="dadosGrafico.length" class="mt-6">
-          <LineChart1 v-if="dadosGrafico.length" :dados="dadosGrafico" />
+          <LineChart1 v-if="dadosGrafico.length" :dados="dadosGrafico" class="w-full" />
     </div>
     </template>
   </Card>
@@ -70,3 +70,11 @@ const calcularPoupanca = () => {
   dadosGrafico.value = resultados;
 };
 </script>
+
+<style scoped>
+.center-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
