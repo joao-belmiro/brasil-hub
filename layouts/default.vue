@@ -12,15 +12,15 @@
       "
     >
       <template #start>
-        <h1
-          class="flex flex-row items-center gap-3 justify-center font-extrabold leading-none text-green-500 sm:text-sm md:text-2xl xl:text-3xl lg:text-3xl tracking-normal"
-        >
-          Brasil
-          <mark
+        <NuxtLink :to="`/`">
+          <h1 class="flex flex-row items-center gap-3 justify-center font-extrabold leading-none text-green-500 sm:text-sm md:text-2xl xl:text-3xl lg:text-3xl tracking-normal">
+            Brasil
+            <mark
             class="px-2 py-2 text-white bg-yellow-300 rounded-sm dark:bg-yellow-500"
             >hub</mark
-          >
-        </h1>
+            >
+          </h1>
+        </NuxtLink>
       </template>
       <template #item="{ item }">
         <a

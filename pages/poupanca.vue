@@ -52,22 +52,21 @@ const meses = ref(12);
 const dadosGrafico = ref([]);
 
 const calcularPoupanca = () => {
-  let saldo = valorInicial.value;
-  let totalDepositado = valorInicial.value;
-  let jurosMes= taxaJuros.value /12;
-  const dados = [];
-
-  for (let i = 1; i <= meses.value; i++) {
-    saldo += aporte.value;
-    totalDepositado += aporte.value;
-    saldo *= 1 + jurosMes / 100; 
-    dados.push({
-      mes: `Mês ${i}`,
-      saldo: parseFloat(saldo.toFixed(2)), // Corrige precisão
+  const taxaMensal = taxaJuros.value / 12 / 100;
+  const resultados = Array.from({ length: meses.value }, (_, i) => {
+    const mes = i + 1;
+    const totalDepositado = valorInicial.value + (aporte.value * mes);
+    
+    const saldo = (valorInicial.value * Math.pow(1 + taxaMensal, mes)) + 
+                 (aporte.value * ((Math.pow(1 + taxaMensal, mes) - 1) / taxaMensal));
+    
+    return {
+      mes: `Mês ${mes}`,
+      saldo: parseFloat(saldo.toFixed(2)),
       totalDepositado: parseFloat(totalDepositado.toFixed(2))
-    });
-  }
-
-  dadosGrafico.value = dados;
+    };
+  });
+  
+  dadosGrafico.value = resultados;
 };
 </script>
