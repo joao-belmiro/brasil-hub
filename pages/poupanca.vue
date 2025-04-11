@@ -30,9 +30,30 @@
       <Button label="Calcular" class="w-full md:w-auto text-white" type="submit" />
     </form>
 
-    <div v-if="dadosGrafico.length" class="mt-6">
-          <LineChart1 v-if="dadosGrafico.length" :dados="dadosGrafico" class="w-full" />
+    <div v-if="dadosGrafico.length" class="mt-6 flex flex-col md:flex-row gap-4">
+      <Card class="border-gray-100 border-1 w-full md:w-1/2" style="--p-card-border-radius: 16px;">
+        <template #content>
+          <p class="text-lg not:dark:text-white">Total Depositado</p>
+          <p class="text-2xl md:text-3xl font-semibold text-green-600">
+            {{ dadosGrafico[dadosGrafico.length - 1]?.totalDepositado ?
+              dadosGrafico[dadosGrafico.length - 1].totalDepositado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) :
+              'R$ 0,00' }}
+          </p>
+        </template>
+      </Card>
+
+      <Card class="border-gray-100 border-1 w-full md:w-1/2" style="--p-card-border-radius: 16px;">
+        <template #content>
+          <p class="text-lg not:dark:text-white">Saldo com juros</p>
+          <p class="text-2xl md:text-3xl font-semibold text-green-600">
+            {{ dadosGrafico[dadosGrafico.length - 1]?.saldo ?
+              dadosGrafico[dadosGrafico.length - 1].saldo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) :
+              'R$ 0,00' }}
+          </p>
+        </template>
+      </Card>
     </div>
+    <LineChart1 v-if="dadosGrafico.length" :dados="dadosGrafico" class="w-full mt-6" />
     </template>
   </Card>
 </div>

@@ -52,7 +52,7 @@
         >
           <span
             class="inline-flex items-center justify-center rounded-full bg-primary text-primary-contrast w-10 h-10"
-            style="--p-primary-color: #009739)"
+            style="--p-primary-color: #009739"
           >
            <Icon :name="item.icon" :strokeWidth="2" :class="['text-lg', 'dark:text-white opacity-100']"/>
           </span>
