@@ -82,98 +82,102 @@
 import Button from 'primevue/button';
 import MegaMenu from 'primevue/megamenu';
 
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 const isDark = ref(true);
 const items = ref([
-  {
-    label: "Company",
-    root: true,
-    icon: "pi pi-user",
-    items: [
-      [
-        {
-          items: [
-            {
-              label: "Features",
-              icon: "Calculator",
-              subtext: "Subtext of item",
-            },
-            {
-              label: "Customers",
-              icon: "Users",
-              subtext: "Subtext of item",
-            },
-            {
-              label: "Case Studies",
-              icon: "File",
-              subtext: "Subtext of item",
-            },
-          ],
-        },
-      ],
-      [
-        {
-          items: [
-            {
-              label: "Solutions",
-              icon: "Shield",
-              subtext: "Subtext of item",
-            },
-            {
-              label: "Faq",
-              icon: "TableOfContents",
-              subtext: "Subtext of item",
-            },
-            {
-              label: "Library",
-              icon: "Search",
-              subtext: "Subtext of item",
-            },
-          ],
-        },
-      ],
-      [
-        {
-          items: [
-            {
-              label: "Community",
-              icon: "MessageCircle",
-              subtext: "Subtext of item",
-            },
-            {
-              label: "Rewards",
-              icon: "Star",
-              subtext: "Subtext of item",
-            },
-            {
-              label: "Investors",
-              icon: "Globe",
-              subtext: "Subtext of item",
-            },
-          ],
-        },
-      ],
-    ],
-  },
-  {
-    label: "Resources",
-    root: true,
-  },
-  {
-    label: "Contact",
-    root: true,
-  },
+//  {
+//    label: "Company",
+  //  root: true,
+  //  icon: "pi pi-user",
+  //  items: [
+  //    [
+  //      {
+  //        items: [
+  //          {
+  //            label: "Features",
+//              icon: "Calculator",
+//              subtext: "Subtext of item",
+//            },
+//            {
+//              label: "Customers",
+//              icon: "Users",
+//              subtext: "Subtext of item",
+//            },
+//            {
+//              label: "Case Studies",
+//              icon: "File",
+//              subtext: "Subtext of item",
+//            },
+//          ],
+//        },
+//      ],
+//      [
+//        {
+//          items: [
+//            {
+//              label: "Solutions",
+//              icon: "Shield",
+//              subtext: "Subtext of item",
+//            },
+//            {
+//              label: "Faq",
+//              icon: "TableOfContents",
+//              subtext: "Subtext of item",
+//            },
+//            {
+//              label: "Library",
+//              icon: "Search",
+//              subtext: "Subtext of item",
+//            },
+//          ],
+//        },
+//      ],
+//      [
+//        {
+//          items: [
+//            {
+//              label: "Community",
+//              icon: "MessageCircle",
+//              subtext: "Subtext of item",
+//            },
+//            {
+//              label: "Rewards",
+//              icon: "Star",
+//              subtext: "Subtext of item",
+//            },
+//            {
+//              label: "Investors",
+//              icon: "Globe",
+//              subtext: "Subtext of item",
+//            },
+//          ],
+//        },
+//      ],
+//    ],
+//  },
+//  {
+//    label: "Resources",
+//    root: true,
+//  },
+//  {
+//    label: "Contact",
+//    root: true,
+//  },
 ]);
 
 const toggleDarkMode = () => {
     isDark.value = !isDark.value;
     document.documentElement.classList.toggle("my-app-dark");
 };
+
+onMounted(() => {
+  toggleDarkMode();
+});
 </script>
 
 <style scoped>
 .megamenu-container {
-  width: 70%;
+  width: 90%;
   margin: 1.25rem auto;
 }
 </style>
