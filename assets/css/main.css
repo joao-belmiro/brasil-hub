@@ -68,3 +68,11 @@
     font-family: 'Poppins', sans-serif;
     min-height: 100vh;
   }
+/* Estilização para todas as tabelas */
+table {
+  border-radius: 8px; /* Ajuste o valor conforme necessário */
+  /* Assumindo que --surface-100 ou similar seja a cor de fundo das células */
+  /* Se a cor for diferente, substitua pela variável/classe correta */
+  border: 1px solid var(--surface-100); 
+  overflow: hidden; /* Garante que o conteúdo não ultrapasse o border-radius */
+}
