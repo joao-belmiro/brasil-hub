@@ -38,22 +38,23 @@ const calculators = ref([
     to: 'poupanca'
   },
   {
-    title: "Calculadora de Juros",
-    description: "Simule juros de cartão de crédito",
-    icon: "Percent",
-    to: 'poupanca'
-  },
-  {
     title: "Salário Líquido",
     description: "Calcule seu salário líquido CLT",
     icon: "DollarSign",
-    to: 'poupanca'
+    to: 'calculo-irpf'
   },
   {
-    title: "Calculadora INSS",
-    description: "Calcule sua contribuição INSS",
-    icon: "Calculator",
-    to: 'poupanca'
+    title: "Calculadora IRPF",
+    description: "Calcule seu IRPF",
+    icon: "PiggyBank",
+    to: 'calculo-irpf'
   },
+  {
+    title: "Calculadora Custo CLT",
+    description: "Calcule os custos de um funcionário CLT",
+    icon: "ChartArea",
+    to: 'calculadora-custo-trabalhador'
+  },
+
 ]);
 </script>
