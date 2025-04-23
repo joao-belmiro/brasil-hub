@@ -1,6 +1,6 @@
 <template>
   <div class="center-container">
-    <Card class="shadow-sm dark:border-0 border-gray-200 max-w-4xl w-full" style="--p-card-border-radius: 16px;">
+    <Card class="shadow-sm dark:border-0 border-gray-200 w-full" style="--p-card-border-radius: 16px;">
 
       <template #title>Calculadora de IRPF</template>
       <template #content>

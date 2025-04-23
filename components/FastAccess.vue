@@ -38,6 +38,12 @@ const calculators = ref([
     to: 'poupanca'
   },
   {
+    title: "Correção IPCA",
+    description: "Corrija valores pela inflação IPCA",
+    icon: "TrendingUp",
+    to: 'correcao-ipca'
+  },
+  {
     title: "Salário Líquido",
     description: "Calcule seu salário líquido CLT",
     icon: "DollarSign",

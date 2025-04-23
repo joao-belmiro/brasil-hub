@@ -68,7 +68,6 @@ const calcularCusto = () => {
   const outrosBeneficiosMensais = outrosBeneficios.value;
   const valeTransporte = salario * (valeTransportePercentual.value / 100);
 
-  // INSS (Empregado)
   let inssEmpregado = 0;
   if (salario <= 1412.00) {
     inssEmpregado = salario * 0.075;
@@ -110,7 +109,6 @@ const calcularCusto = () => {
 };
 
 const custoTotal = computed(() => {
-  // Somamos apenas os itens que são custos reais para o empregador
   return custoResults.value.reduce((sum, item) => {
     if (['INSS (Empregado)', 'Vale Transporte (Contribuição do Empregado)'].includes(item.description)) {
       return sum;
@@ -121,15 +119,14 @@ const custoTotal = computed(() => {
 
 const formatCurrency = (value) => {
     if (typeof value !== 'number') {
-        return 'R$ 0,00'; // Handle cases where value is not a number
+        return 'R$ 0,00';
     }
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 };
 
-// Function to apply CSS class based on description
 const getRowClass = (data) => {
   if (['INSS (Empregado)', 'Vale Transporte (Contribuição do Empregado)'].includes(data.description)) {
-    return 'contribution'; // Apply a class for employee contributions (green color)
+    return 'contribution';
   }
   return '';
 };
@@ -146,7 +143,6 @@ const getRowClass = (data) => {
 
 }
 
-/* Override PrimeVue table styles if needed */
 :deep(.p-datatable .p-datatable-thead > tr > th) {
     background: #343a40;
     color: white;
