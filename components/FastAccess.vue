@@ -44,6 +44,12 @@ const calculators = ref([
     to: 'correcao-ipca'
   },
   {
+    title: "Rescisão Contratual",
+    description: "Calcule os valores da rescisão contratual",
+    icon: "FileMinus",
+    to: 'rescisao-contratual'
+  },
+  {
     title: "Salário Líquido",
     description: "Calcule seu salário líquido CLT",
     icon: "DollarSign",
