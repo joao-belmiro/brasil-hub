@@ -31,7 +31,7 @@
     --highlight-bg: var(--yellow-500);
     --highlight-text-color: var(--blue-500);
   }
-@font-face {
+/*  @font-face {
     font-family: 'Poppins';
     src: url('@/assets/fonts/Poppins-Regular.woff2') format('woff2'),
          url('@/assets/fonts/Poppins-Regular.woff') format('woff');
@@ -67,7 +67,7 @@
   body {
     font-family: 'Poppins', sans-serif;
     min-height: 100vh;
-  }
+  }*/
 /* Estilização para todas as tabelas */
 table {
   border-radius: 8px; /* Ajuste o valor conforme necessário */
