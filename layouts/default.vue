@@ -175,9 +175,6 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.megamenu-container {
-  width: 90%;
-  margin: 1.25rem auto;
-}
+<style>
+
 </style>

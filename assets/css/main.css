@@ -3,8 +3,12 @@
 @import "tailwindcss";
 @import "tailwindcss-primeui";
 .center-container {
-  width: 70%;
+  width: 80%;
   margin: 3rem auto;
+}
+.megamenu-container {
+  width: 90%;
+  margin: 1.25rem auto;
 }
 .p-megamenu-item:not(.p-disabled) > .p-megamenu-item-content:hover {
   border-radius: 12px;
@@ -75,4 +79,10 @@ table {
   /* Se a cor for diferente, substitua pela variável/classe correta */
   border: 1px solid var(--surface-100); 
   overflow: hidden; /* Garante que o conteúdo não ultrapasse o border-radius */
+}
+
+@media (max-width: 1024px) {
+  .center-container, .megamenu-container {
+    width: 95%;
+  }
 }

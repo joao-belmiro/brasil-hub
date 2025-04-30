@@ -87,7 +87,6 @@
 <script setup>
 import { ref, computed, watch, nextTick } from 'vue';
 import { jsPDF } from "jspdf";
-import PieChart from "../components/PieChart.vue";
 
 
 const salarioBruto = ref(0);
