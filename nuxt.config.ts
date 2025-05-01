@@ -4,6 +4,13 @@ import Material from '@primeuix/themes/material';
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
+  app: {
+    head: {
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '_nuxt/static/favicon.svg' }
+      ]
+    }
+  },
   css: [
     '~/assets/css/main.css'
   ],
