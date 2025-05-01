@@ -90,7 +90,7 @@ import MegaMenu from 'primevue/megamenu';
 import { ref, onMounted } from "vue";
 const isDark = ref(true);
 const router = useRouter();
-const items = ref([
+const items = ref([]);
 useHead({
   script: [
     {
@@ -106,7 +106,7 @@ useHead({
       `
     }
   ]
-}),
+});
 //  {
 //    label: "Company",
   //  root: true,
@@ -185,7 +185,6 @@ useHead({
 //    label: "Contact",
 //    root: true,
 //  },
-]);
 
 const toggleDarkMode = () => {
     isDark.value = !isDark.value;
