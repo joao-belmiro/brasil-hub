@@ -7,22 +7,31 @@
           <div class="flex flex-row flex-wrap gap-4">
             <div class="w-full sm:w-full md:w-full lg:w-1/3">
               <label for="valorInicial" class="text-xs mb-2 block">Valor Inicial:</label>
-              <InputNumber id="valorInicial" v-model.number="valorInicial" class="w-full" mode="decimal" :minFractionDigits="2"
-                :maxFractionDigits="2" />
+              <InputNumber id="valorInicial" v-model.number="valorInicial" fluid mode="decimal" :minFractionDigits="2"
+                :maxFractionDigits="2" class="w-full" :invalid="errors.valorInicial" />
+              <p v-if="errors.valorInicial" class="text-red-500 text-sm">
+                {{ errors.valorInicial }}
+              </p>
             </div>
             <div class="w-full sm:w-full md:w-full lg:w-1/4">
-              <label for="anoInicial" class="block mb-2">Ano Inicial:</label>
+              <label for="anoInicial" class="text-xs mb-2 block">Ano Inicial:</label>
               <Dropdown id="anoInicial" v-model="anoInicial" :options="anos" optionLabel="ano" placeholder="Selecione o Ano"
-                class="w-full" />
+                class="w-full" :invalid="errors.anoInicial" />
+              <p v-if="errors.anoInicial" class="text-red-500 text-sm">
+                {{ errors.anoInicial }}
+              </p>
             </div>
             <div class="w-full sm:w-full md:w-full lg:w-1/4">
-              <label for="anoFinal" class="block mb-2">Ano Final:</label>
+              <label for="anoFinal" class="text-xs mb-2 block">Ano Final:</label>
               <Dropdown id="anoFinal" v-model="anoFinal" :options="anos" optionLabel="ano" placeholder="Selecione o Ano"
-                class="w-full" />
+                class="w-full" :invalid="errors.anoFinal" />
+                 <p v-if="errors.anoFinal" class="text-red-500 text-sm">
+                {{ errors.anoFinal }}
+              </p>
             </div>
           </div>
         </div>
-        <Button @click="calcularCorrecao" label="Calcular" class="p-button-raised" />
+        <Button @click="calcularCorrecao" label="Calcular" icon="pi pi-calculator" class="p-button-raised" />
       </template>
     </Card>
     <Card v-if="valorCorrigido !== null" class="shadow-sm dark:border-0 border-gray-200" style="--p-card-border-radius: 16px;">
@@ -57,6 +66,7 @@ const anoInicial = ref(null);
 const anoFinal = ref(null);
 const valorCorrigido = ref(null);
 const ipcaAnual = ref([]);
+const errors = ref({});
 
 // IPCA data
 const ipcaData = {
@@ -67,14 +77,34 @@ const ipcaData = {
 
 const anos = Array.from({ length: 2024 - 2010 + 1 }, (_, i) => ({ ano: 2010 + i }));
 
-const calcularCorrecao = () => {
-  if (!anoInicial.value || !anoFinal.value || anoInicial.value.ano > anoFinal.value.ano) {
-    valorCorrigido.value = null;
-    ipcaAnual.value = [];
-    return;
+const validateForm = () => {
+  errors.value = {};
+  let isValid = true;
+
+  if (!valorInicial.value || valorInicial.value <= 0) {
+    errors.value.valorInicial = "O valor inicial é obrigatório e deve ser maior que zero.";
+    isValid = false;
   }
-  const yearStart = anoInicial.value.ano;
-  const yearEnd = anoFinal.value.ano;
+  if (!anoInicial.value) {
+    errors.value.anoInicial = "O ano inicial é obrigatório.";
+    isValid = false;
+  }
+  if (!anoFinal.value) {
+    errors.value.anoFinal = "O ano final é obrigatório.";
+    isValid = false;
+  }
+  if (anoInicial.value && anoFinal.value && anoInicial.value.ano > anoFinal.value.ano) {
+    errors.value.anoFinal = "O ano final deve ser maior ou igual ao ano inicial.";
+    isValid = false;
+  }
+  return isValid;
+};
+
+const calcularCorrecao = () => {
+  if (!validateForm()) {
+    return;
+  } const yearStart = anoInicial.value.ano;
+    const yearEnd = anoFinal.value.ano;
 
   if (yearStart < 2010 || yearEnd > 2024 || yearStart > yearEnd) {
       valorCorrigido.value = null;

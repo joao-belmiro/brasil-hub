@@ -1,6 +1,6 @@
 <template>
-  <div class="center-container mx-auto p-4">
-    <Card class="shadow-sm dark:border-0 border-gray-200 p-4" style="--p-card-border-radius: 16px;">
+  <div class="center-container mx-auto p-2">
+    <Card class="shadow-sm dark:border-0 border-gray-200" style="--p-card-border-radius: 16px;">
       <template #content>
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-2xl font-bold">Rescisão Contratual</h1>

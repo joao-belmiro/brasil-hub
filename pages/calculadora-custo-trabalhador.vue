@@ -1,8 +1,7 @@
 <template>
   <div class="center-container">
-    <Card class="shadow-sm dark:border-0 border-gray-200 max-w-4xl w-full" style="--p-card-border-radius: 16px;">
+    <Card class="shadow-sm dark:border-0 border-gray-200 w-full" style="--p-card-border-radius: 16px;">
       <template #content>
-        <RouterLink to="/" class="flex items-center text-blue-500 hover:text-blue-700 mb-4"><Icon name="arrow-left" /> Voltar ao Início</RouterLink>
         <h2 class="text-xl md:text-2xl font-normal text-green-600 mb-6 md:mb-8">Calculadora de Custo do Trabalhador (CLT)</h2>
 
         <form @submit.prevent="calcularCusto" class="space-y-4 md:space-y-6">

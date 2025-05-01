@@ -1,34 +1,49 @@
 <template>
-  <div class="center-container">
-    <Card class="shadow-sm dark:border-0 border-gray-200 max-w-4xl w-full" style="--p-card-border-radius: 16px;">
+  <div class="center-container p-4">
+    <Card class="shadow-sm dark:border-0 border-gray-200 w-full" style="--p-card-border-radius: 16px;">
       <template #content>
         <h2 class="text-xl md:text-2xl font-normal text-green-600 mb-6 md:mb-8">Simulador de Juros Compostos</h2>
 
         <form @submit.prevent="calcularPoupanca" class="space-y-4 md:space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block not:dark:text-white mb-2 md:mb-3">Valor inicial</label>
-              <InputNumber size="small" v-model="valorInicial" mode="currency" currency="BRL" locale="pt-BR"
-                class="w-full rounded-md" />
+              <label class="block text-xs not:dark:text-white mb-2 md:mb-3">Valor inicial</label>
+              <InputNumber size="small" v-model="valorInicial" mode="currency" currency="BRL" locale="pt-BR" class="w-full rounded-md"
+                :invalid="errors.valorInicial" />
+              <p v-if="errors.valorInicial" class="text-red-500 text-sm">
+                {{ errors.valorInicial }}
+              </p>
+
             </div>
             <div>
-              <label class="block not:dark:text-white mb-2 md:mb-3">Valor mensal</label>
-              <InputNumber size="small" v-model="aporte" mode="currency" currency="BRL" locale="pt-BR" class="w-full" />
+              <label class="block text-xs not:dark:text-white mb-2 md:mb-3">Valor mensal</label>
+              <InputNumber size="small" v-model="aporte" mode="currency" currency="BRL" locale="pt-BR" class="w-full"
+                :invalid="errors.aporte" />
+              <p v-if="errors.aporte" class="text-red-500 text-sm">
+                {{ errors.aporte }}
+              </p>
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block not:dark:text-white mb-2 md:mb-3">Taxa de juros anual (%)</label>
-              <InputNumber size="small" v-model="taxaJuros" mode="decimal" :min="0" :max="100" class="w-full" />
+              <label class="block text-xs not:dark:text-white mb-2 md:mb-3">Taxa de juros anual (%)</label>
+              <InputNumber size="small" v-model="taxaJuros" mode="decimal" :min="0" :max="100" class="w-full"
+                :invalid="errors.taxaJuros" />
+              <p v-if="errors.taxaJuros" class="text-red-500 text-sm">
+                {{ errors.taxaJuros }}
+              </p>
             </div>
             <div>
-              <label class="block not:dark:text-white mb-2 md:mb-3">Período (meses)</label>
-              <InputNumber size="small" v-model="meses" :min="1" class="w-full" />
+              <label class="block text-xs not:dark:text-white mb-2 md:mb-3">Período (meses)</label>
+              <InputNumber size="small" v-model="meses" :min="1" class="w-full" :invalid="errors.meses" />
+              <p v-if="errors.meses" class="text-red-500 text-sm">
+                {{ errors.meses }}
+              </p>
             </div>
           </div>
-
-          <Button label="Calcular" class="w-full md:w-auto text-white" type="submit" />
+          
+        <Button label="Calcular" size="small" class="w-full md:w-auto text-white" icon="pi pi-calculator" type="submit" />
         </form>
 
         <div v-if="dadosGrafico.length" class="mt-6 flex flex-col md:flex-row gap-4">
@@ -146,11 +161,38 @@ const valorInicial = ref(3000);
 const aporte = ref(500);
 const taxaJuros = ref(6.17);
 const meses = ref(12);
+const errors = ref({});
 const dadosGrafico = ref([]);
 
+const validateForm = () => {
+  errors.value = {};
+  let isValid = true;
+
+  if (!valorInicial.value || valorInicial.value <= 0) {
+    errors.value.valorInicial = "O valor inicial é obrigatório e deve ser maior que zero.";
+    isValid = false;
+  }
+  if (!aporte.value || aporte.value <= 0) {
+    errors.value.aporte = "O aporte mensal é obrigatório e deve ser maior que zero.";
+    isValid = false;
+  }
+  if (!taxaJuros.value || taxaJuros.value < 0 || taxaJuros.value > 100) {
+    errors.value.taxaJuros = "A taxa de juros é obrigatória e deve ser entre 0 e 100.";
+    isValid = false;
+  }
+  if (!meses.value || meses.value < 1) {
+    errors.value.meses = "O período é obrigatório e deve ser maior ou igual a 1.";
+    isValid = false;
+  }
+  return isValid;
+};
+
 const calcularPoupanca = () => {
+  if (!validateForm()) {
+    return;
+  }
   const taxaMensal = taxaJuros.value / 12 / 100;
-  const resultados = Array.from({ length: meses.value }, (_, i) => {
+   const resultados = Array.from({ length: meses.value }, (_, i) => {
     const mes = i + 1;
     const totalDepositado = valorInicial.value + (aporte.value * mes);
 

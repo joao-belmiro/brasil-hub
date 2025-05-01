@@ -51,14 +51,8 @@ const calculators = ref([
   },
   {
     title: "Salário Líquido",
-    description: "Calcule seu salário líquido CLT",
-    icon: "DollarSign",
-    to: 'calculo-irpf'
-  },
-  {
-    title: "Calculadora IRPF",
-    description: "Calcule seu IRPF",
-    icon: "PiggyBank",
+    description: "Calcule seu salário líquido CLT e IRPF",
+    icon: "Wallet",
     to: 'calculo-irpf'
   },
   {
