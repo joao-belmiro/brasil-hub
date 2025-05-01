@@ -1,21 +1,21 @@
 <template>
-  <div class="center-container mx-auto p-4">
+  <div class="center-container p-4">
     <Card class="mb-4 shadow-sm dark:border-0 border-gray-200 w-full" style="--p-card-border-radius: 16px;">
       <template #content>
         <h1 class="text-2xl font-bold mb-4">Correção IPCA</h1>
         <div class="mb-4">
           <div class="flex flex-row flex-wrap gap-4">
-            <div class="sm:w-full md:w-full lg:w-1/3">
-              <label for="valorInicial" class="block mb-2">Valor Inicial:</label>
+            <div class="w-full sm:w-full md:w-full lg:w-1/3">
+              <label for="valorInicial" class="text-xs mb-2 block">Valor Inicial:</label>
               <InputNumber id="valorInicial" v-model.number="valorInicial" class="w-full" mode="decimal" :minFractionDigits="2"
                 :maxFractionDigits="2" />
             </div>
-            <div class="sm:w-full md:w-full lg:w-1/4">
+            <div class="w-full sm:w-full md:w-full lg:w-1/4">
               <label for="anoInicial" class="block mb-2">Ano Inicial:</label>
               <Dropdown id="anoInicial" v-model="anoInicial" :options="anos" optionLabel="ano" placeholder="Selecione o Ano"
                 class="w-full" />
             </div>
-            <div class="sm:w-full md:w-full lg:w-1/4">
+            <div class="w-full sm:w-full md:w-full lg:w-1/4">
               <label for="anoFinal" class="block mb-2">Ano Final:</label>
               <Dropdown id="anoFinal" v-model="anoFinal" :options="anos" optionLabel="ano" placeholder="Selecione o Ano"
                 class="w-full" />

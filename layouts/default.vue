@@ -74,7 +74,12 @@
    
   </div>
    <div class="content">
-      <slot />
+    <div v-if ="$route.path != '/'" class="center-container">
+      <NuxtLink to="/">
+        <Button label="Volta a home" icon="pi pi-home" variant="link" />
+      </NuxtLink>
+    </div>
+    <slot />
     </div>
     </div>
 </template>
@@ -84,7 +89,24 @@ import MegaMenu from 'primevue/megamenu';
 
 import { ref, onMounted } from "vue";
 const isDark = ref(true);
+const router = useRouter();
 const items = ref([
+useHead({
+  script: [
+    {
+      src: 'https://www.googletagmanager.com/gtag/js?id=G-GD1PD7V946',
+      async: true
+    },
+    {
+      children: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-GD1PD7V946');
+      `
+    }
+  ]
+}),
 //  {
 //    label: "Company",
   //  root: true,
@@ -172,6 +194,13 @@ const toggleDarkMode = () => {
 
 onMounted(() => {
   toggleDarkMode();
+  router.afterEach((to) => {
+    if (window.gtag) {
+      window.gtag('config', 'G-GD1PD7V946', {
+        page_path: to.fullPath
+      });
+    }
+  });
 });
 </script>
 

@@ -8,7 +8,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           <div class="col-span-1">
             <label for="dataAdmissao" class="text-xs mb-2 block">Data de Admissão:</label>
-            <DatePicker id="dataAdmissao" v-model="dataAdmissao" dateFormat="dd/mm/yy" class="w-full"
+            <DatePicker id="dataAdmissao" v-model="dataAdmissao" dateFormat="dd/mm/yy" locale="pt-BR" class="w-full"
               :showIcon="true" placeholder="DD/MM/AAAA" size="small" />
           </div>
           <div class="col-span-1">

@@ -90,8 +90,8 @@
 
           <div class="overflow-x-auto">
             <table
-              class="min-w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-md">
-              <thead class="bg-gray-100 dark:bg-gray-700">
+              class="min-w-full border-b">
+              <thead class="">
                 <tr>
                   <th class="py-2 px-4 border-b dark:border-gray-600 text-left text-gray-600 dark:text-gray-300">Mês
                   </th>

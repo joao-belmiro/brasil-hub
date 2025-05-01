@@ -4,7 +4,7 @@
 @import "tailwindcss-primeui";
 .center-container {
   width: 80%;
-  margin: 3rem auto;
+  margin: 1rem auto;
 }
 .megamenu-container {
   width: 90%;
