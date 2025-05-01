@@ -18,11 +18,11 @@
 }
 :root {
     /* Cores personalizadas */
-    --p-primary-color: #009739;     
-    --p-green-500: #009739;
-    --yellow-500: #FED700;
-    --blue-500: #002776;
-    --white: #FFFFFF;
+    --p-primary-color: #009739 !important;     
+    --p-green-500: #009739 !important;
+    --yellow-500: #FED700 !important;
+    --blue-500: #002776 !important;
+    --white: #FFFFFF !important;
   
     /* Sobrescreva as cores padrão do PrimeVue */
     --primary-500: var(--green-500);
