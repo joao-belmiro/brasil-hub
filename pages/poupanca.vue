@@ -152,21 +152,22 @@
 
 <script setup>
 import { ref } from 'vue';
+import { definePageMeta } from '#imports';
+import { useHead } from '#imports';
 import LineChart1 from '@/components/LineChart.vue';
 import InputNumber from 'primevue/inputnumber';
 import Button from 'primevue/button';
 import Card from "primevue/card";
 
-const valorInicial = ref(3000);
 const aporte = ref(500);
 const taxaJuros = ref(6.17);
 const meses = ref(12);
 const errors = ref({});
 const dadosGrafico = ref([]);
 
-definePageMeta({
-  title: 'Simulador de Rendimento da Poupança 2025',
-  description: 'Veja quanto seu dinheiro rende na poupança com aportes mensais e taxa Selic atualizada. Gráficos e comparativos com outros investimentos.',
+useHead({
+  title: 'Simulador de Rendimento da Poupança', 
+  meta: [{ name: 'description', content: 'Descubra quanto seu dinheiro pode render na poupança. Simule seus rendimentos com diferentes valores iniciais, aportes mensais e períodos. Gráficos e comparativos.' }]
 });
 const validateForm = () => {
   errors.value = {};

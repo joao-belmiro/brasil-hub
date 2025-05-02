@@ -1,4 +1,6 @@
-﻿<template>
+<template>
+
+
   <div class="center-container">
     <Card class="shadow-sm dark:border-0 border-gray-200 w-full" style="--p-card-border-radius: 16px;">
       <template #content>
@@ -81,11 +83,12 @@ const outrosBeneficios = ref(100);
 const custoResults = ref([]);
 const errors = ref({});
 
-definePageMeta({
+useHead({
   title: 'Calculadora de Custo Trabalhista CLT 2025 - Encargos e Benefícios',
-  description: 'Descubra o custo total de um funcionário CLT em 2025 com encargos sociais, benefícios e impostos. Use nossa calculadora atualizada.',
-});
-
+  meta: [
+    { name: 'description', content: 'Descubra o custo total de um funcionário CLT em 2025 com encargos sociais, benefícios e impostos. Use nossa calculadora atualizada.' }
+  ]
+})
 const validateForm = () => {
   errors.value = {};
   let isValid = true;

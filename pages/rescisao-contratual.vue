@@ -112,11 +112,6 @@ const feriasProporcionais = ref(0);
 const decimoTerceiroProporcional = ref(0);
 const beneficiosAdicionais = ref(0);
 
-definePageMeta({
-  title: 'Cálculo de Rescisão Contratual CLT 2025 - Simulador Online',
-  description: 'Calcule verbas rescisórias como aviso prévio, férias, 13º e FGTS. Ferramenta gratuita e atualizada com a legislação.',
-});
-
 const motivosRescisao = ref([
   { label: 'Sem Justa Causa', value: 'sem-justa-causa' },
   { label: 'Por Justa Causa', value: 'por-justa-causa' },
@@ -124,6 +119,13 @@ const motivosRescisao = ref([
   { label: 'Rescisão Indireta', value: 'rescisao-indireta' },
   { label: 'Acordo entre as Partes', value: 'acordo-entre-as-partes' },
 ]);
+
+useHead({
+  title: 'Cálculo de Rescisão Contratual CLT 2025 - Simulador Online',
+  meta: [
+    { name: 'description', content: 'Calcule verbas rescisórias como aviso prévio, férias, 13º e FGTS. Ferramenta gratuita e atualizada com a legislação.' },
+  ],
+});
 
 const calculando = ref(false);
 const rescisaoCalculada = ref(false);

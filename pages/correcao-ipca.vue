@@ -1,5 +1,6 @@
 <template>
   <div class="center-container p-4">
+    
     <Card class="mb-4 shadow-sm dark:border-0 border-gray-200 w-full" style="--p-card-border-radius: 16px;">
       <template #content>
         <h2 class="text-xl md:text-2xl font-normal text-green-600 mb-6 md:mb-8">Correção IPCA</h2>
@@ -30,27 +31,29 @@
             </div>
           </div>
         </div>
-        <Button @click="calcularCorrecao" label="Calcular" icon="pi pi-calculator" class="p-button-raised" />
+        <Button @click="calcularCorrecao" label="Calcular" icon="pi pi-calculator" class="p-button-raised"/>
       </template>
     </Card>
-    <Card v-if="valorCorrigido !== null" class="shadow-sm dark:border-0 border-gray-200" style="--p-card-border-radius: 16px;">
-          <template #content>
-             <h2 class="text-xl font-semibold">Valor Corrigido:</h2>
-            <p class="text-green-600 font-bold text-2xl">{{ valorCorrigido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</p>
-          </template>
-        </Card>
-    <Card v-if="ipcaAnual.length > 0" class="shadow-sm dark:border-0 border-gray-200 mt-4"
-        style="--p-card-border-radius: 16px;">
-        <template #content>
-            <h2 class="text-xl font-semibold">IPCA Anual:</h2>
-            <ul>
-                <li v-for="item in ipcaAnual" :key="item.ano">
-                    {{ item.ano }}: {{ item.ipca.toFixed(2) }}%
-                </li>
-            </ul>
+        <Card v-if="valorCorrigido !== null" class="shadow-sm dark:border-0 border-gray-200 mt-4" style="--p-card-border-radius: 16px;">
+            <template #content>
+                <h2 class="text-xl mb-3">Valor Corrigido: </h2>
+                <p class="text-green-600 font-bold text-2xl">{{ valorCorrigido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</p>
+
+                <DataTable v-if="ipcaAnual.length > 0" :value="ipcaAnual" class="shadow-md border-gray-300 mt-4">
+                    <Column field="ano" header="Ano" style="min-width: 10rem">
+                        <template #body="slotProps">
+                            {{ slotProps.data.ano }}
+                        </template>
+                    </Column>
+                    <Column field="ipca" header="IPCA" style="min-width: 10rem">
+                        <template #body="slotProps">
+                            {{ slotProps.data.ipca.toFixed(2) }}%
+                        </template>
+                    </Column>
+                </DataTable>
         </template>
         </Card>
-  </div>
+</div>
 </template>
 
 <script setup>
@@ -59,17 +62,15 @@ import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
 import Card from "primevue/card";
 import Dropdown from 'primevue/dropdown';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 
 const valorInicial = ref(0);
 const anoInicial = ref(null);
 const anoFinal = ref(null);
 const valorCorrigido = ref(null);
 const ipcaAnual = ref([]);
-const errors = ref({});
-definePageMeta({
-  title: 'Correção Monetária pelo IPCA - Calculadora Online Atualizada',
-  description: 'Calcule a correção de valores com base no IPCA de forma simples e gratuita. Dados atualizados com os índices oficiais.',
-});
+const errors = ref({}); 
 // IPCA data
 const ipcaData = {
   2010: 5.91, 2011: 6.50, 2012: 5.84, 2013: 5.91, 2014: 6.41,
@@ -126,4 +127,11 @@ const calcularCorrecao = () => {
 
   valorCorrigido.value = parseFloat(valorAtual.toFixed(2));
 };
+</script>
+
+<script>
+  export default {
+    useHead: {title: 'Correção Monetária pelo IPCA - Calculadora Online Atualizada',
+    description: 'Calcule a correção de valores com base no IPCA de forma simples e gratuita. Dados atualizados com os índices oficiais.',}
+  }
 </script>

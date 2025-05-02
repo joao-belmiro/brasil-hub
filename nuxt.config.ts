@@ -6,6 +6,15 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   sitemap: {
     hostname: 'htttp://brasilhub.net',
+    routes: [
+      '/',
+      '/calculadora-custo-trabalhador',
+      '/calculo-irpf',
+      '/correcao-ipca',
+      '/poupanca',
+      '/rescisao-contratual'
+    ],
+    trailingSlash: false
   },
   robots: {
     rules: [{ userAgent: '*', allow: '/' }]

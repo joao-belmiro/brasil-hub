@@ -4,7 +4,7 @@
       class="shadow-sm dark:border-0 border-gray-200 w-full"
       style="--p-card-border-radius: 16px"
     >
-      <template #title><h2 class="text-xl md:text-2xl font-normal text-green-600 mb-6 md:mb-8">Calculadora de IRPF</h2></template>
+      <template #title><h2 class="text-xl md:text-2xl font-normal text-green-600 mb-6 md:mb-8">Calculadora de Salário e IRPF</h2></template>
       <template #content>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="w-full sm:w-full md:w-full lg:w-1/2">
@@ -108,170 +108,118 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, computed } from 'vue';
 import Card from "primevue/card";
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-export default {
-  data() {
-    return {
-      grossSalary: 0,
-      calculationResult: null,
-      errors: {},
-    };
-  },
-  methods: {
-    async calculateIrpf() {
-      this.errors = {};
-      if (!this.grossSalary) {
-        this.errors.grossSalary = "Salário bruto é obrigatório.";
-        return;
-      }
-      if (this.grossSalary <= 0) {
-        this.errors.grossSalary = "Salário bruto deve ser maior que zero.";
-        return;
-      }
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
 
-      const grossSalary = parseFloat(this.grossSalary);
+const grossSalary = ref(0);
+const calculationResult = ref(null);
+const errors = ref({});
 
-      // Cálculo do INSS (simplificado, usar tabela oficial para valores precisos)
-      let inssRate = 0;
-      let inss = 0;
-      if (grossSalary <= 1320.00) {
-        inssRate = 0.075;
-      } else if (grossSalary <= 2571.29) {
-        inssRate = 0.09;
-      } else if (grossSalary <= 3856.94) {
-        inssRate = 0.12;
-      } else if (grossSalary <= 7507.49) {
-        inssRate = 0.14;
-      } else {
-        inss = 828.39; // Teto do INSS (valor de 2024, consultar tabela atualizada)
-      }
+const calculateIrpf = async () => {
+  errors.value = {};
 
-      if (inss === 0) {
-        inss = grossSalary * inssRate;
-      }
+  if (!grossSalary.value) {
+    errors.value.grossSalary = "Salário bruto é obrigatório.";
+    return;
+  }
 
-      // Cálculo do IRPF (simplificado, usar tabela progressiva oficial)
-      const irpfBase = grossSalary - inss;
-      let irpfRate = 0;
-      let irpfDeduction = 0;
-      let irpf = 0;
+  if (grossSalary.value <= 0) {
+    errors.value.grossSalary = "Salário bruto deve ser maior que zero.";
+    return;
+  }
 
-      if (irpfBase <= 2112.00) {
-        irpfRate = 0;
-        irpfDeduction = 0;
-      } else if (irpfBase <= 2826.65) {
-        irpfRate = 0.075;
-        irpfDeduction = 158.40;
-      } else if (irpfBase <= 3751.05) {
-        irpfRate = 0.15;
-        irpfDeduction = 370.40;
-      } else if (irpfBase <= 4664.68) {
-        irpfRate = 0.225;
-        irpfDeduction = 651.73;
-      } else {
-        irpfRate = 0.275;
-        irpfDeduction = 884.96;
-      }
+  const gross = parseFloat(grossSalary.value);
 
-      if (irpfRate > 0) {
-        irpf = irpfBase * irpfRate - irpfDeduction;
-      }
+  // INSS
+  let inssRate = 0;
+  let inss = 0;
 
-      const netSalary = irpfBase - irpf;
+  if (gross <= 1320.00) {
+    inssRate = 0.075;
+  } else if (gross <= 2571.29) {
+    inssRate = 0.09;
+  } else if (gross <= 3856.94) {
+    inssRate = 0.12;
+  } else if (gross <= 7507.49) {
+    inssRate = 0.14;
+  } else {
+    inss = 828.39;
+  }
 
-      this.calculationResult = {
-        grossSalary: grossSalary.toFixed(2),
-        inss: inss.toFixed(2), 
-        irpfBase: irpfBase.toFixed(2),
-        irpfRate: (irpfRate * 100).toFixed(1),
-        irpfDeduction: irpfDeduction.toFixed(2),
-        irpf: irpf.toFixed(2),
-        netSalary: netSalary.toFixed(2),
-      };
+  if (inss === 0) {
+    inss = gross * inssRate;
+  }
 
-    },
-  },
-  computed: {
-    calculationRows() {
-      if (!this.calculationResult) {
-        return [];
-      }
-      return [
-        {
-          label: "Salário Bruto",
-          value: this.calculationResult.grossSalary,
-          currency: true,
-        },
-        {
-          label: "INSS",
-          value: this.calculationResult.inss,
-          currency: true,
-        },
+  const irpfBase = gross - inss;
+  let irpfRate = 0;
+  let irpfDeduction = 0;
+  let irpf = 0;
 
+  if (irpfBase <= 2112.00) {
+    irpfRate = 0;
+    irpfDeduction = 0;
+  } else if (irpfBase <= 2826.65) {
+    irpfRate = 0.075;
+    irpfDeduction = 158.40;
+  } else if (irpfBase <= 3751.05) {
+    irpfRate = 0.15;
+    irpfDeduction = 370.40;
+  } else if (irpfBase <= 4664.68) {
+    irpfRate = 0.225;
+    irpfDeduction = 651.73;
+  } else {
+    irpfRate = 0.275;
+    irpfDeduction = 884.96;
+  }
 
-        { label: 'Base de Cálculo IRPF', value: this.calculationResult.irpfBase, currency: true },
-        { label: 'Alíquota IRPF', value: this.calculationResult.irpfRate, percentage: true },
-        { label: 'Parcela a Deduzir', value: this.calculationResult.irpfDeduction, currency: true },
-        { label: 'IRPF Devido', value: this.calculationResult.irpf, currency: true },
-        { label: 'Salário Líquido', value: this.calculationResult.netSalary, currency: true },
-      ];
-    },
-    inssCalculation() {
-      return [
-        { range: "Até R$ 1.320,00", rate: "7,5%", maxDeduction: "R$ 99,00" },
-        {
-          range: "De R$ 1.320,01 até R$ 2.571,29",
-          rate: "9,0%",
-          maxDeduction: "R$ 214,42",
-        },
-        {
-          range: "De R$ 2.571,30 até R$ 3.856,94",
-          rate: "12,0%",
-          maxDeduction: "R$ 365,78",
-        },
-        {
-          range: "De R$ 3.856,95 até R$ 7.507,49",
-          rate: "14,0%",
-          maxDeduction: "R$ 886,32",
-        },
-        {
-          range: "Acima de R$ 7.507,49",
-          rate: "-",
-          maxDeduction: "Teto: R$ 828,39",
-        },
-      ];
-    },
-    irpfCalculation() {
-      return [
-        { range: "Até R$ 2.112,00", rate: "0%", deduction: "R$ 0,00" },
-        {
-          range: "De R$ 2.112,01 até R$ 2.826,65",
-          rate: "7,5%",
-          deduction: "R$ 158,40",
-        },
-        {
-          range: "De R$ 2.826,66 até R$ 3.751,05",
-          rate: "15%",
-          deduction: "R$ 370,40",
-        },
-        {
-          range: "De R$ 3.751,06 até R$ 4.664,68",
-          rate: "22,5%",
-          deduction: "R$ 651,73",
-        },
-        {
-          range: "Acima de R$ 4.664,68",
-          rate: "27,5%",
-          deduction: "R$ 884,96",
-        },
-      ];
-    },
-  },
-  components: { Card, InputNumber, Button, DataTable, Column },
+  if (irpfRate > 0) {
+    irpf = irpfBase * irpfRate - irpfDeduction;
+  }
+
+  const netSalary = irpfBase - irpf;
+
+  calculationResult.value = {
+    grossSalary: gross.toFixed(2),
+    inss: inss.toFixed(2),
+    irpfBase: irpfBase.toFixed(2),
+    irpfRate: (irpfRate * 100).toFixed(1),
+    irpfDeduction: irpfDeduction.toFixed(2),
+    irpf: irpf.toFixed(2),
+    netSalary: netSalary.toFixed(2),
+  };
 };
+
+const calculationRows = computed(() => {
+  if (!calculationResult.value) return [];
+  return [
+    { label: "Salário Bruto", value: calculationResult.value.grossSalary, currency: true },
+    { label: "INSS", value: calculationResult.value.inss, currency: true },
+    { label: "Base de Cálculo IRPF", value: calculationResult.value.irpfBase, currency: true },
+    { label: "Alíquota IRPF", value: calculationResult.value.irpfRate, percentage: true },
+    { label: "Parcela a Deduzir", value: calculationResult.value.irpfDeduction, currency: true },
+    { label: "IRPF Devido", value: calculationResult.value.irpf, currency: true },
+    { label: "Salário Líquido", value: calculationResult.value.netSalary, currency: true },
+  ];
+});
+
+const inssCalculation = computed(() => [
+  { range: "Até R$ 1.320,00", rate: "7,5%", maxDeduction: "R$ 99,00" },
+  { range: "De R$ 1.320,01 até R$ 2.571,29", rate: "9,0%", maxDeduction: "R$ 214,42" },
+  { range: "De R$ 2.571,30 até R$ 3.856,94", rate: "12,0%", maxDeduction: "R$ 365,78" },
+  { range: "De R$ 3.856,95 até R$ 7.507,49", rate: "14,0%", maxDeduction: "R$ 886,32" },
+  { range: "Acima de R$ 7.507,49", rate: "-", maxDeduction: "Teto: R$ 828,39" },
+]);
+
+const irpfCalculation = computed(() => [
+  { range: "Até R$ 2.112,00", rate: "0%", deduction: "R$ 0,00" },
+  { range: "De R$ 2.112,01 até R$ 2.826,65", rate: "7,5%", deduction: "R$ 158,40" },
+  { range: "De R$ 2.826,66 até R$ 3.751,05", rate: "15%", deduction: "R$ 370,40" },
+  { range: "De R$ 3.751,06 até R$ 4.664,68", rate: "22,5%", deduction: "R$ 651,73" },
+  { range: "Acima de R$ 4.664,68", rate: "27,5%", deduction: "R$ 884,96" },
+]);
 </script>
