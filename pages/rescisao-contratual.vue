@@ -72,26 +72,23 @@
       </template>
     </Card>
 
-    <Card v-if="rescisaoCalculada" class="mt-6 shadow-sm dark:border-0 border-gray-200 p-4" style="--p-card-border-radius: 16px;"
+    <Card v-if="rescisaoCalculada" class="mt-6 shadow-sm dark:border-0  p-4" style="--p-card-border-radius: 16px;"
       :loading="calculando">
       <template #content>
-        <h1 class="text-2xl font-bold mb-4">Resumo da Rescisão Contratual</h1>
-        <div class="grid gap-4">
-          <p class="col-span-1">Saldo de Salário: {{ formatCurrency(saldoSalario) }}</p>
-          <p class="col-span-1">Férias Vencidas + 1/3: {{ formatCurrency(feriasVencidasValor) }}</p>
-          <p class="col-span-1">Férias Proporcionais + 1/3: {{ formatCurrency(feriasProporcionaisValor) }}</p>
-          <p class="col-span-1">13º Salário Proporcional: {{ formatCurrency(decimoTerceiroProporcionalValor) }}</p>
-          <p class="col-span-1">Aviso Prévio: {{ formatCurrency(avisoPrevioValor) }}</p>
-          <p class="col-span-1">Multa FGTS: {{ formatCurrency(multaFGTS) }}</p>
-          <p class="col-span-1">Benefícios Adicionais: {{ formatCurrency(beneficiosAdicionais) }}</p>
-          <p class="col-span-1">Total Bruto a Receber: {{ formatCurrency(totalBruto) }}</p>
-          <p class="col-span-1">Descontos INSS: {{ formatCurrency(descontoINSS) }}</p>
-          <p class="col-span-1">Descontos IRRF: {{ formatCurrency(descontoIRRF) }}</p>
-          <p class="col-span-1">Total Líquido a Receber: {{ formatCurrency(totalLiquido) }}</p>
-          <div class="col-span-1 flex justify-end">
-            <Button label="Exportar para PDF" @click="exportToPDF" class="p-button-raised" />
-          </div>
-        </div>
+       <h1 class="text-2xl font-bold mb-4">Resumo da Rescisão Contratual</h1>
+          <DataTable :value="rescisaoData" class=" border-gray-200 shadow-sm">
+            <Column field="description" header="Item" style="min-width: 15rem;">
+            </Column>
+            <Column field="value" header="Valor" style="min-width: 15rem;">
+              <template #body="slotProps">
+                {{ formatCurrency(slotProps.data.value) }}
+              </template>
+            </Column>
+           
+          </DataTable>
+
+          <Button label="Exportar para PDF" icon="pi pi-file-pdf" @click="exportToPDF" class="p-button-raised mt-4" />
+
       </template>
     </Card>
   </div>
@@ -162,39 +159,52 @@ const calcularRescisao = () => {
   }
 
 };
-
 const rescisaoData = computed(() => {
-  return [
-    {
-      description: "Saldo de Salário",
-      value: formatCurrency(saldoSalario.value),
-      details: `Referente aos dias trabalhados até a data de demissão (${dataDemissao.value?.getDate()}).`,
-    },
-    {
-      description: "Férias Vencidas + 1/3",
-      value: formatCurrency(feriasVencidasValor.value),
-      details: `Férias vencidas + adicional de 1/3 sobre o valor das férias.`,
-    },
-    {
-      description: "Férias Proporcionais + 1/3",
-      value: formatCurrency(feriasProporcionaisValor.value),
-      details: `Férias proporcionais ao período trabalhado + adicional de 1/3 sobre o valor das férias proporcionais.`,
-    },
-    {
-      description: "13º Salário Proporcional",
-      value: formatCurrency(decimoTerceiroProporcionalValor.value),
-      details: `Referente aos meses trabalhados no ano vigente.`,
-    },
-    {
-      description: "Aviso Prévio",
-      value: formatCurrency(avisoPrevioValor.value),
-      details: `Valor referente ao aviso prévio, conforme o motivo da rescisão e os dias de aviso.`,
-    },
-    {
-      description: "Multa FGTS",
-      value: formatCurrency(multaFGTS.value),
-      details: `Multa de 40% ou 20% sobre o saldo do FGTS, dependendo do motivo da rescisão.`,
-    },
+    return [
+      {
+        description: "Saldo de Salário",
+        value: saldoSalario.value,
+      },
+      {
+        description: "Férias Vencidas + 1/3",
+        value: feriasVencidasValor.value,
+      },
+      {
+        description: "Férias Proporcionais + 1/3",
+        value: feriasProporcionaisValor.value,
+      },
+      {
+        description: "13º Salário Proporcional",
+        value: decimoTerceiroProporcionalValor.value,
+      },
+      {
+        description: "Aviso Prévio",
+        value: avisoPrevioValor.value,
+      },
+      {
+        description: "Multa FGTS",
+        value: multaFGTS.value,
+      },
+       {
+        description: "Benefícios Adicionais",
+        value: beneficiosAdicionais.value,
+      },
+       {
+        description: "Total Bruto a Receber",
+        value: totalBruto.value,
+      },
+      {
+        description: "Descontos INSS",
+        value: descontoINSS.value,
+      },
+       {
+        description: "Descontos IRRF",
+        value: descontoIRRF.value,
+      },
+      {
+        description: 'Total Líquido a Receber:',
+        value: formatCurrency(totalLiquido.value)
+      }
 
   ];
 });
@@ -333,20 +343,15 @@ const formatCurrency = (value) => {
 const exportToPDF = () => {
   const doc = new jsPDF();
 
-  doc.text("Resumo da Rescisão Contratual", 10, 10);
-  doc.setFontSize(10)
-  doc.text(`Saldo de Salário: ${formatCurrency(saldoSalario.value)}`, 10, 20);
-  doc.text(`Férias Vencidas + 1/3: ${formatCurrency(feriasVencidasValor.value)}`, 10, 30);
-  doc.text(`Férias Proporcionais + 1/3: ${formatCurrency(feriasProporcionaisValor.value)}`, 10, 40);
-  doc.text(`13º Salário Proporcional: ${formatCurrency(decimoTerceiroProporcionalValor.value)}`, 10, 50);
-  doc.text(`Aviso Prévio: ${formatCurrency(avisoPrevioValor.value)}`, 10, 60);
-  doc.text(`Multa FGTS: ${formatCurrency(multaFGTS.value)}`, 10, 70);
-  doc.text(`Benefícios Adicionais: ${formatCurrency(beneficiosAdicionais.value)}`, 10, 80);
-  doc.text(`Total Bruto a Receber: ${formatCurrency(totalBruto.value)}`, 10, 90);
-  doc.text(`Descontos INSS: ${formatCurrency(descontoINSS.value)}`, 10, 100);
-  doc.text(`Descontos IRRF: ${formatCurrency(descontoIRRF.value)}`, 10, 110);
-  doc.text(`Total de Descontos: ${formatCurrency(totalDescontos.value)}`, 10, 120);
-  doc.setFontSize(14)
+  doc.text("Resumo da Rescisão Contratual", 10, 10);doc.setFontSize(10)
+
+  let y = 20;
+    rescisaoData.value.forEach(item => {
+    doc.text(`${item.description}: ${formatCurrency(item.value)}`, 10, y);
+    y += 10;
+  });
+
+  doc.setFontSize(14);
   doc.setTextColor("#008000");
   doc.text(`Valor Líquido da Rescisão: ${formatCurrency(totalLiquido.value)}`, 10, 140);
 
