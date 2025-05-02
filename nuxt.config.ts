@@ -4,6 +4,12 @@ import Material from '@primeuix/themes/material';
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
+  sitemap: {
+    hostname: 'htttp://brasilhub.net',
+  },
+  robots: {
+    rules: [{ userAgent: '*', allow: '/' }]
+  },
   app: {
     head: {
       link: [
@@ -16,7 +22,7 @@ export default defineNuxtConfig({
   ],
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  modules: ['nuxt-echarts', '@primevue/nuxt-module'],
+  modules: ['nuxt-echarts', '@primevue/nuxt-module', '@nuxtjs/sitemap'],
   vite: {
     plugins: [tailwindcss()],
     resolve: {

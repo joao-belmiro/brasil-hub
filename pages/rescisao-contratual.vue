@@ -3,28 +3,40 @@
     <Card class="shadow-sm dark:border-0 border-gray-200" style="--p-card-border-radius: 16px;">
       <template #content>
         <div class="flex justify-between items-center mb-6">
-          <h1 class="text-2xl font-bold">Rescisão Contratual</h1>
+          <h2 class="text-xl md:text-2xl font-normal text-green-600 mb-6 md:mb-8">Rescisão Contratual</h2>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           <div class="col-span-1">
             <label for="dataAdmissao" class="text-xs mb-2 block">Data de Admissão:</label>
-            <DatePicker id="dataAdmissao" v-model="dataAdmissao" dateFormat="dd/mm/yy" locale="pt-BR" class="w-full"
+            <DatePicker id="dataAdmissao" v-model="dataAdmissao" dateFormat="dd/mm/yy" locale="pt-BR" class="w-full" :invalid="errors.dataAdmissao"
               :showIcon="true" placeholder="DD/MM/AAAA" size="small" />
+              <p v-if="errors.dataAdmissao" class="text-red-500 text-sm">
+                {{ errors.dataAdmissao }}
+              </p>
           </div>
           <div class="col-span-1">
             <label for="dataDemissao" class="text-xs mb-2 block">Data de Demissão:</label>
-            <DatePicker id="dataDemissao" v-model="dataDemissao" dateFormat="dd/mm/yy" class="w-full"
+            <DatePicker id="dataDemissao" v-model="dataDemissao" dateFormat="dd/mm/yy" class="w-full" :invalid="errors.dataDemissao"
               :showIcon="true" placeholder="DD/MM/AAAA" size="small" />
+              <p v-if="errors.dataDemissao" class="text-red-500 text-sm">
+                {{ errors.dataDemissao }}
+              </p>
           </div>
           <div class="col-span-1">
             <label for="salarioBruto" class="text-xs mb-2 block">Salário Bruto Mensal:</label>
-            <InputNumber id="salarioBruto" v-model.number="salarioBruto" mode="decimal" :minFractionDigits="2"
-              :maxFractionDigits="2" class="w-full" placeholder="Ex: 3000.00" size="small" />
+            <InputNumber id="salarioBruto" v-model="salarioBruto" mode="currency" currency="BRL" locale="pt-BR" class="w-full" :invalid="errors.salarioBruto"
+                placeholder="Ex: 3000.00" size="small" />
+              <p v-if="errors.salarioBruto" class="text-red-500 text-sm">
+                {{ errors.salarioBruto }}
+              </p>
           </div>
           <div class="col-span-1">
             <label for="motivoRescisao" class="text-xs mb-2 block">Motivo da Rescisão:</label>
-            <Dropdown id="motivoRescisao" v-model="motivoRescisao" :options="motivosRescisao" optionLabel="label"
-              class="w-full" placeholder="Selecione o Motivo" size="small" />
+            <Dropdown id="motivoRescisao" v-model="motivoRescisao" :options="motivosRescisao" optionLabel="label" :invalid="errors.motivoRescisao"
+                class="w-full" placeholder="Selecione o Motivo" size="small" />
+                <p v-if="errors.motivoRescisao" class="text-red-500 text-sm">
+                {{ errors.motivoRescisao }}
+              </p>
           </div>
           <div class="col-span-1">
             <label for="diasAviso" class="text-xs mb-2 block">Dias de Aviso Prévio (Trabalhado ou Indenizado):</label>
@@ -55,7 +67,7 @@
         <div class="flex justify-end gap-2 mt-4">
           
            <Button label="Limpar Tudo" class="p-button-secondary" @click="limparTudo" />
-           <Button label="Calcular" @click="calcularRescisao" class="p-button-raised" :disabled="calculando"/>
+           <Button label="Calcular" @click="calcularRescisao" class="p-button-raised" :loading="calculando"/>
           </div>
       </template>
     </Card>
@@ -90,6 +102,7 @@ import { jsPDF } from "jspdf";
 
 
 const salarioBruto = ref(0);
+const errors = ref({});
 const dataAdmissao = ref(null);
 const dataDemissao = ref(null);
 const motivoRescisao = ref(null);
@@ -98,6 +111,11 @@ const feriasVencidas = ref(0);
 const feriasProporcionais = ref(0);
 const decimoTerceiroProporcional = ref(0);
 const beneficiosAdicionais = ref(0);
+
+definePageMeta({
+  title: 'Cálculo de Rescisão Contratual CLT 2025 - Simulador Online',
+  description: 'Calcule verbas rescisórias como aviso prévio, férias, 13º e FGTS. Ferramenta gratuita e atualizada com a legislação.',
+});
 
 const motivosRescisao = ref([
   { label: 'Sem Justa Causa', value: 'sem-justa-causa' },
@@ -110,10 +128,36 @@ const motivosRescisao = ref([
 const calculando = ref(false);
 const rescisaoCalculada = ref(false);
 
+const validateForm = () => {
+  errors.value = {};
+  let isValid = true;
+  if (!dataAdmissao.value) {
+    errors.value.dataAdmissao = "A data de admissão é obrigatória.";
+    isValid = false;
+  }
+  if (!dataDemissao.value) {
+    errors.value.dataDemissao = "A data de demissão é obrigatória.";
+    isValid = false;
+  } else if (dataDemissao.value < dataAdmissao.value) {
+    errors.value.dataDemissao = "A data de demissão deve ser posterior à data de admissão.";
+    isValid = false;
+  }
+  if (!salarioBruto.value || salarioBruto.value <= 0) {
+    errors.value.salarioBruto = "O salário bruto é obrigatório e deve ser maior que zero.";
+    isValid = false;
+  }
+  if (!motivoRescisao.value) {
+    errors.value.motivoRescisao = "O motivo da rescisão é obrigatório.";
+    isValid = false;
+  }
+  return isValid;
+};
 const calcularRescisao = () => {
-  calculando.value = true;
-  rescisaoCalculada.value = true;
-  calculando.value = false;
+  if (validateForm()) {
+      calculando.value = true;
+      rescisaoCalculada.value = true;
+      calculando.value = false;
+  }
 
 };
 
@@ -162,6 +206,7 @@ const limparTudo = () => {
     feriasProporcionais.value = 0;
     decimoTerceiroProporcional.value = 0;
     beneficiosAdicionais.value = 0;
+    errors.value = {};
     rescisaoCalculada.value = false
     calculando.value = false
 };

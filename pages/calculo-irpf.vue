@@ -4,10 +4,10 @@
       class="shadow-sm dark:border-0 border-gray-200 w-full"
       style="--p-card-border-radius: 16px"
     >
-      <template #title>Calculadora de IRPF</template>
+      <template #title><h2 class="text-xl md:text-2xl font-normal text-green-600 mb-6 md:mb-8">Calculadora de IRPF</h2></template>
       <template #content>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="w-full sm:w-full md:w-full lg:w-1/3">
+          <div class="w-full sm:w-full md:w-full lg:w-1/2">
             <label for="grossSalary" class="text-xs mb-2 block"
               >Salário Bruto (R$)</label
             >
@@ -16,9 +16,11 @@
               size="small"
               inputId="grossSalary"
               v-model="grossSalary"
+              :invalid="errors.grossSalary"
               mode="currency"
               currency="BRL"
               locale="pt-BR"
+              fluid
             />
             <p v-if="errors.grossSalary" class="text-red-500 text-sm">
               {{ errors.grossSalary }}

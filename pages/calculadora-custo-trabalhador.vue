@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="center-container">
     <Card class="shadow-sm dark:border-0 border-gray-200 w-full" style="--p-card-border-radius: 16px;">
       <template #content>
@@ -7,27 +7,44 @@
         <form @submit.prevent="calcularCusto" class="space-y-4 md:space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block not:dark:text-white mb-2 md:mb-3">Salário Bruto (R$)</label>
-              <InputNumber size="small" v-model="salarioBruto" mode="currency" currency="BRL" locale="pt-BR" class="w-full rounded-md" />
+              <label class="block not:dark:text-white mb-2 md:mb-3">Salário Bruto (R$)</label>            
+              <InputNumber size="small" v-model="salarioBruto" mode="currency" currency="BRL" locale="pt-BR" class="w-full rounded-md" :invalid="errors.salarioBruto" />
+              <p v-if="errors.salarioBruto" class="text-red-500 text-sm">
+                {{ errors.salarioBruto }}
+              </p>
             </div>
             <div>
               <label class="block not:dark:text-white mb-2 md:mb-3">Outros Benefícios Mensais (R$)</label>
-              <InputNumber size="small" v-model="outrosBeneficios" mode="currency" currency="BRL" locale="pt-BR" class="w-full" />
+              <InputNumber size="small" v-model="outrosBeneficios" mode="currency" currency="BRL" locale="pt-BR" class="w-full" :invalid="errors.outrosBeneficios" />
+              <p v-if="errors.outrosBeneficios" class="text-red-500 text-sm">
+                {{ errors.outrosBeneficios }}
+              </p>
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block not:dark:text-white mb-2 md:mb-3">VA/VR Mensal (R$)</label>
-              <InputNumber size="small" v-model="valeRefeicaoAlimentacao" mode="currency" currency="BRL" locale="pt-BR" class="w-full rounded-md" />
+              <InputNumber size="small" v-model="valeRefeicaoAlimentacao" mode="currency" currency="BRL" locale="pt-BR" class="w-full rounded-md" :invalid="errors.valeRefeicaoAlimentacao" />
+              <p v-if="errors.valeRefeicaoAlimentacao" class="text-red-500 text-sm">
+                {{ errors.valeRefeicaoAlimentacao }}
+              </p>
             </div>
             <div>
               <label class="block not:dark:text-white mb-2 md:mb-3">Vale Transporte (%)</label>
-              <InputNumber size="small" v-model="valeTransportePercentual" suffix="%" class="w-full" />
+              <InputNumber size="small" v-model="valeTransportePercentual" suffix="%" class="w-full" :invalid="errors.valeTransportePercentual" />
+              <p v-if="errors.valeTransportePercentual" class="text-red-500 text-sm">
+                {{ errors.valeTransportePercentual }}
+              </p>
             </div>
           </div>
 
-
-          <Button label="Calcular" class="w-full md:w-auto text-white" type="submit" />
+          <div class="flex justify-end gap-2 mt-4">
+           
+            <Button label="Limpar Tudo" class="p-button-secondary" @click="limparTudo" />
+             <Button label="Calcular" class="w-full md:w-auto text-white" type="submit" />
+           
+          </div>
+         
         </form>
 
         <div v-if="custoResults.length > 0" class="mt-6">
@@ -56,13 +73,46 @@ import InputNumber from 'primevue/inputnumber';
 import Button from 'primevue/button';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-
+import { nextTick } from 'vue';
 const salarioBruto = ref(3000);
 const valeTransportePercentual = ref(6);
 const valeRefeicaoAlimentacao = ref(20);
 const outrosBeneficios = ref(100);
 const custoResults = ref([]);
+const errors = ref({});
+
+definePageMeta({
+  title: 'Calculadora de Custo Trabalhista CLT 2025 - Encargos e Benefícios',
+  description: 'Descubra o custo total de um funcionário CLT em 2025 com encargos sociais, benefícios e impostos. Use nossa calculadora atualizada.',
+});
+
+const validateForm = () => {
+  errors.value = {};
+  let isValid = true;
+
+  if (!salarioBruto.value || salarioBruto.value <= 0) {
+    errors.value.salarioBruto = "O salário bruto é obrigatório e deve ser maior que zero.";
+    isValid = false;
+  }
+  if (!outrosBeneficios.value || outrosBeneficios.value < 0) {
+    errors.value.outrosBeneficios = "O valor deve ser maior ou igual a zero.";
+    isValid = false;
+  }
+  if (!valeRefeicaoAlimentacao.value || valeRefeicaoAlimentacao.value < 0) {
+    errors.value.valeRefeicaoAlimentacao = "O valor deve ser maior ou igual a zero.";
+    isValid = false;
+  }
+  if (!valeTransportePercentual.value || valeTransportePercentual.value < 0 || valeTransportePercentual.value > 100) {
+    errors.value.valeTransportePercentual = "O valor deve ser entre 0 e 100.";
+    isValid = false;
+  }
+  return isValid;
+};
+
 const calcularCusto = () => {
+  if (!validateForm()) {
+    return;
+  }
   const salario = salarioBruto.value;
   const outrosBeneficiosMensais = outrosBeneficios.value;
   const valeTransporte = salario * (valeTransportePercentual.value / 100);
@@ -115,7 +165,16 @@ const custoTotal = computed(() => {
     return sum + item.value;
   }, 0);
 });
+const limparTudo = () => {
+  salarioBruto.value = 0;
+  valeTransportePercentual.value = 6;
+  valeRefeicaoAlimentacao.value = 20;
+  outrosBeneficios.value = 100;
+  custoResults.value = [];
+  errors.value = {};
 
+};
+ 
 const formatCurrency = (value) => {
     if (typeof value !== 'number') {
         return 'R$ 0,00';

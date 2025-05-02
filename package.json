@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtjs/sitemap": "^7.2.10",
     "@primeuix/themes": "^1.0.0",
     "@primevue/forms": "^4.3.3",
     "@tailwindcss/vite": "^4.0.9",

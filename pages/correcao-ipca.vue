@@ -2,13 +2,12 @@
   <div class="center-container p-4">
     <Card class="mb-4 shadow-sm dark:border-0 border-gray-200 w-full" style="--p-card-border-radius: 16px;">
       <template #content>
-        <h1 class="text-2xl font-bold mb-4">Correção IPCA</h1>
+        <h2 class="text-xl md:text-2xl font-normal text-green-600 mb-6 md:mb-8">Correção IPCA</h2>
         <div class="mb-4">
           <div class="flex flex-row flex-wrap gap-4">
             <div class="w-full sm:w-full md:w-full lg:w-1/3">
               <label for="valorInicial" class="text-xs mb-2 block">Valor Inicial:</label>
-              <InputNumber id="valorInicial" v-model.number="valorInicial" fluid mode="decimal" :minFractionDigits="2"
-                :maxFractionDigits="2" class="w-full" :invalid="errors.valorInicial" />
+              <InputNumber id="valorInicial" v-model.number="valorInicial" mode="currency" currency="BRL" locale="pt-BR" class="w-full"  />
               <p v-if="errors.valorInicial" class="text-red-500 text-sm">
                 {{ errors.valorInicial }}
               </p>
@@ -67,7 +66,10 @@ const anoFinal = ref(null);
 const valorCorrigido = ref(null);
 const ipcaAnual = ref([]);
 const errors = ref({});
-
+definePageMeta({
+  title: 'Correção Monetária pelo IPCA - Calculadora Online Atualizada',
+  description: 'Calcule a correção de valores com base no IPCA de forma simples e gratuita. Dados atualizados com os índices oficiais.',
+});
 // IPCA data
 const ipcaData = {
   2010: 5.91, 2011: 6.50, 2012: 5.84, 2013: 5.91, 2014: 6.41,
@@ -97,6 +99,7 @@ const validateForm = () => {
     errors.value.anoFinal = "O ano final deve ser maior ou igual ao ano inicial.";
     isValid = false;
   }
+
   return isValid;
 };
 

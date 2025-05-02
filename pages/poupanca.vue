@@ -164,6 +164,10 @@ const meses = ref(12);
 const errors = ref({});
 const dadosGrafico = ref([]);
 
+definePageMeta({
+  title: 'Simulador de Rendimento da Poupança 2025',
+  description: 'Veja quanto seu dinheiro rende na poupança com aportes mensais e taxa Selic atualizada. Gráficos e comparativos com outros investimentos.',
+});
 const validateForm = () => {
   errors.value = {};
   let isValid = true;
