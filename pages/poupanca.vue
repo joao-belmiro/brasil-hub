@@ -28,7 +28,9 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs not:dark:text-white mb-2 md:mb-3">Taxa de juros anual (%)</label>
-              <InputNumber size="small" v-model="taxaJuros" mode="decimal" :min="0" :max="100" class="w-full"
+              <InputNumber size="small" v-model="taxaJuros" mode="decimal" :minFractionDigits="2" 
+                   :maxFractionDigits="2" 
+                     locale="pt-BR" :min="0" :max="100" class="w-full"
                 :invalid="errors.taxaJuros" />
               <p v-if="errors.taxaJuros" class="text-red-500 text-sm">
                 {{ errors.taxaJuros }}
@@ -158,7 +160,7 @@ import LineChart1 from '@/components/LineChart.vue';
 import InputNumber from 'primevue/inputnumber';
 import Button from 'primevue/button';
 import Card from "primevue/card";
-
+const valorInicial = ref(1500);
 const aporte = ref(500);
 const taxaJuros = ref(6.17);
 const meses = ref(12);
